@@ -14,6 +14,7 @@ const whiteBlock = document.querySelector(".answer-white-block");
 const againButton = document.getElementById("again-btn");
 
 againButton.addEventListener("click", () => {
+  checkButton.disabled = false;
   score = 20;
   scoreEl.textContent = score;
   secretNumber = Math.trunc(Math.random() * 20) + 1;
@@ -25,40 +26,42 @@ againButton.addEventListener("click", () => {
 });
 
 const check = () => {
-      const guess = Number(guessInput.value);
+  const guess = Number(guessInput.value);
 
-      //no input
-      if (!guess) {
-        message.textContent = "🚫 Not a number";
+  //no input
+  if (!guess) {
+    message.textContent = "🚫 Not a number";
 
-        //player wins
-      } else if (guess === secretNumber) {
-        result.textContent = secretNumber;
-        message.textContent = "✔️ Correct Number!";
-        bodyEl.style.backgroundColor = "#60b347";
-        whiteBlock.style.width = "20rem";
-        if (score > highestScore) {
-          highestScore = score;
-          highscoreEl.textContent = highestScore;
-        }
+    //player wins
+  } else if (guess === secretNumber) {
+    result.textContent = secretNumber;
+    message.textContent = "✔️ Correct Number!";
+    bodyEl.style.backgroundColor = "#60b347";
+    whiteBlock.style.width = "20rem";
+    if (score > highestScore) {
+      highestScore = score;
+      highscoreEl.textContent = highestScore;
+    }
 
-        //guess is too high
-      } else if (guess > secretNumber) {
-        showMessage("📈 Too High!");
+    //guess is too high
+  } else if (guess > secretNumber) {
+    showMessage("📈 Too High!");
 
-        //guess is too low
-      } else if (guess < secretNumber) {
-        showMessage("📉 Too Low!");
-      }
+    //guess is too low
+  } else if (guess < secretNumber) {
+    showMessage("📉 Too Low!");
+  }
 };
 
 const showMessage = (output) => {
   if (score > 1) {
     message.textContent = output;
     increaseScore();
-  } else {
+  } else if (score === 1) {
     increaseScore();
     message.textContent = "🥺You are lose!🥀";
+    bodyEl.style.backgroundColor = "red";
+    checkButton.disabled = true;
   }
 };
 
